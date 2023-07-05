@@ -73,19 +73,19 @@ public class PlayerOpenShop implements Listener {
 
 
 
-        // Remove money from player inventory
+        // Put money into chest
+        Shop.addItems(shop.getChest().getInventory(), shop.getNeed(),shop.getAmount());
+
+        // Remove money from player
         Shop.removeItems(player.getInventory(),shop.getNeed(),shop.getAmount());
 
         // Remove item from shop
         event.getInventory().setItem(event.getSlot(),new ItemStack(Material.AIR));
 
-        // Give item to player
+        // Give the item to the player
         Shop.addItems(player.getInventory(),itemStack,itemStack.getAmount());
-
-        // Put money to shop
-        Shop.addItems(shop.getChest().getInventory(), shop.getNeed(),shop.getAmount());
         shop.update();
-        player.sendMessage("§aSuccessfully buy item!");
+        player.sendMessage("§a购买成功");
         
 
     }
