@@ -85,7 +85,7 @@ public class PlayerOpenShop implements Listener {
         // Give the item to the player
         Shop.addItems(player.getInventory(),itemStack,itemStack.getAmount());
         shop.update();
-        player.sendMessage("§a购买成功");
+        player.sendMessage("§aSuccessfully buy item!");
         
 
     }
