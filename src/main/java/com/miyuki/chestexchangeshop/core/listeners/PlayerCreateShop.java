@@ -53,7 +53,7 @@ public class PlayerCreateShop implements Listener {
         event.getPlayer().sendMessage("§aShop created successfully.");
         event.setLine(0,"§1[SHOP]");
         event.setLine(2,event.getPlayer().getName());
-        ((Sign)event.getBlock().getState()).setEditable(true);
+        ((Sign)event.getBlock().getState()).setEditable(false);
         getShopManager().register(Utils.getlinkNo(),event.getBlock(),event.getPlayer().getUniqueId(),event.getLines());
     }
 
