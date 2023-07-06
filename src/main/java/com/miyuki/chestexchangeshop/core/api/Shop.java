@@ -8,11 +8,11 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Sign;
 import org.bukkit.block.data.type.WallSign;
+import org.bukkit.block.sign.Side;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ListIterator;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -20,7 +20,7 @@ import java.util.UUID;
  */
 public class Shop {
 
-    /**
+        /**
      * Shop owner UUID
      */
     private UUID owner;
@@ -59,15 +59,17 @@ public class Shop {
      * Shop name
      */
     private String shop_name;
+
     /**
      * Initialize shop
      * @param location Shop Location (Sign)
      */
-    public Shop(String name,Location location,UUID owner,String[] msg){
-        this.shop_name =name;
+
+    public Shop(String name, Location location, UUID owner, String[] msg) {
+        this.shop_name = name;
         this.sign_location = location;
-        this.sign = (Sign)location.getBlock().getState();
-        this.chest = (Chest)getAttache(this.sign.getBlock()).getState();
+        this.sign = (Sign) location.getBlock().getState();
+        this.chest = (Chest) getAttache(this.sign.getBlock()).getState();
         this.owner = owner;
         this.name = Bukkit.getOfflinePlayer(owner).getName();
         this.chest_location = chest.getLocation();
@@ -75,7 +77,7 @@ public class Shop {
         String[] need = msg[1].split(" ");
         Material material = Material.getMaterial(need[1].toUpperCase());
         ItemStack stack = new ItemStack(material);
-        stack.setAmount(Integer.valueOf(need[0]));
+        stack.setAmount(Integer.parseInt(need[0]));
         this.need = stack;
     }
 
@@ -84,45 +86,46 @@ public class Shop {
      * Initialize shop
      * @param location Shop Location (Sign)
      */
-    public Shop(String name,Location location,UUID owner){
-        this.shop_name =name;
+    public Shop(String name, Location location, UUID owner) {
+        this.shop_name = name;
         this.sign_location = location;
-        this.sign = (Sign)location.getBlock().getState();
-        this.chest = (Chest)getAttache(this.sign.getBlock()).getState();
+        this.sign = (Sign) location.getBlock().getState();
+        this.chest = (Chest) getAttache(this.sign.getBlock()).getState();
         this.owner = owner;
         this.name = Bukkit.getOfflinePlayer(owner).getName();
         this.chest_location = chest.getLocation();
 
-        String[] need = sign.getLine(1).split(" ");
+        String[] need = sign.getSide(Side.FRONT).getLine(1).split(" ");
         Material material = Material.getMaterial(need[1].toUpperCase());
         ItemStack stack = new ItemStack(material);
-        stack.setAmount(Integer.valueOf(need[0]));
-        this.amount = Integer.valueOf(need[0]);
+        stack.setAmount(Integer.parseInt(need[0]));
+        this.amount = Integer.parseInt(need[0]);
         this.need = stack;
     }
-    public int getAmount(){
+
+    public int getAmount() {
         return this.amount;
     }
 
     /**
      * Set shop name
      */
-    public void setName(String name){
+    public void setName(String name) {
         this.shop_name = name;
     }
-
 
     /**
      * Get shop name
      */
-    public String getName(){
+    public String getName() {
         return this.shop_name;
     }
+
     /**
      * Get needed item
      * @return item
      */
-    public ItemStack getNeed(){
+    public ItemStack getNeed() {
         return this.need;
     }
 
@@ -130,7 +133,7 @@ public class Shop {
      * Get chest
      * @return chest Object
      */
-    public Chest getChest(){
+    public Chest getChest() {
         return this.chest;
     }
 
@@ -138,7 +141,7 @@ public class Shop {
      * Get sign location
      * @return sign location
      */
-    public Location getSignLocation(){
+    public Location getSignLocation() {
         return this.sign_location;
     }
 
@@ -147,7 +150,7 @@ public class Shop {
      * Get sign
      * @return sign
      */
-    public Sign getSign(){
+    public Sign getSign() {
         return this.sign;
     }
 
@@ -155,7 +158,7 @@ public class Shop {
      * Get shop owner
      * @return owner UUID
      */
-    public UUID getOwner(){
+    public UUID getOwner() {
         return this.owner;
     }
 
@@ -163,7 +166,7 @@ public class Shop {
      * Get shop owner name
      * @return shop owner name
      */
-    public String getOwnerName(){
+    public String getOwnerName() {
         return this.name;
     }
 
@@ -171,7 +174,7 @@ public class Shop {
      * Get chest location
      * @return Chest location
      */
-    public Location getChestLocation(){
+    public Location getChestLocation() {
         return this.chest_location;
     }
 
@@ -190,7 +193,7 @@ public class Shop {
             return null;
         if (!(b.getState().getBlockData() instanceof WallSign))
             return null;
-        WallSign wallSign = (WallSign)b.getState().getBlockData();
+        WallSign wallSign = (WallSign) b.getState().getBlockData();
         return b.getRelative(wallSign.getFacing().getOppositeFace());
     }
 
@@ -204,7 +207,7 @@ public class Shop {
     public static void addItems(Inventory inventory, ItemStack itemStack, int amount) {
         itemStack.setAmount(1);
         for (int i = 0; i < amount; i++) {
-            inventory.addItem(new ItemStack[] { itemStack });
+            inventory.addItem(itemStack);
         }
     }
 
@@ -217,7 +220,7 @@ public class Shop {
      * @return true if has space, else false
      */
     public static boolean hasSpace(ItemStack is, Inventory inventory, int amount) {
-        int slots = (int)Math.ceil((amount / is.getMaxStackSize()));
+        int slots = (int) Math.ceil((amount / is.getMaxStackSize()));
         if (amount % is.getMaxStackSize() != 0)
             slots++;
         if (slots == 0)
@@ -246,15 +249,15 @@ public class Shop {
      * @param itemStack item
      * @return true if has items, else false
      */
-    public static boolean hasItems(Inventory inventory,ItemStack itemStack){
-        if(itemStack==null){
+    public static boolean hasItems(Inventory inventory, ItemStack itemStack) {
+        if (itemStack == null) {
             return false;
         }
         return getItemAmount(inventory, itemStack) >= itemStack.getAmount();
     }
 
 
-    /**
+     /**
      * Swaping item
      * @param inventory inventory
      * @param itemStack item
@@ -273,7 +276,6 @@ public class Shop {
         }
     }
 
-
     /**
      * Get item in inventory
      * @param inventory inventory
@@ -290,13 +292,13 @@ public class Shop {
         return amount;
     }
 
-    public void update(){
+    public void update() {
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(owner);
-        if(offlinePlayer.getName()==null){
+        if (offlinePlayer.getName() == null) {
             return;
         }
-        if(!sign.getLine(2).equals(offlinePlayer.getName())){
-            sign.setLine(2,offlinePlayer.getName());
+        if (!sign.getSide(Side.FRONT).getLine(2).equals(offlinePlayer.getName())) {
+            sign.getSide(Side.FRONT).setLine(2, offlinePlayer.getName());
         }
     }
 }
